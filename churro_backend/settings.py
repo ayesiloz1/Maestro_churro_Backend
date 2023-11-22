@@ -17,15 +17,12 @@ load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'Agit.3661')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'xyz')
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-cb7xzf948gpk0o5rwk+l7sjym-bljyuj8h%crasv8v^090r6#y'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 
 if DEBUG:
     # Serve media files during development
