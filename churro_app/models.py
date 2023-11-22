@@ -25,9 +25,9 @@ class Career(models.Model):
         return self.name
 
 class Contact(models.Model):
-    method = models.CharField(max_length=50)  # email, message, call
-    name = models.CharField(max_length=100, null=True, blank=True)  # might be null for calls
-    email = models.EmailField(null=True, blank=True)  # might be null for calls
+    method = models.CharField(max_length=50)  
+    name = models.CharField(max_length=100, null=True, blank=True)  
+    email = models.EmailField(null=True, blank=True)  
     message = models.TextField()
 
     def __str__(self):

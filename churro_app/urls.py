@@ -1,4 +1,4 @@
-# churro_app/urls.py
+
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import ChurroViewSet, submit_survey, submit_career, submit_contact, submit_order, home, submit_booking
