@@ -11,6 +11,8 @@ import json
 from .models import Order, OrderItem, MenuItem
 from django.db.models import Q
 from .models import Booking
+import os
+
 class ChurroViewSet(viewsets.ModelViewSet):
     queryset = Churro.objects.all()
     serializer_class = ChurroSerializer
@@ -21,24 +23,24 @@ def home(request):
 
 def churro_create_view(request):
     if request.method == 'POST':
-        # Extract data from the POST request
+      
         name = request.POST.get('name')
         description = request.POST.get('description')
         price = request.POST.get('price')
-        imageUrl = request.POST.get('imageUrl')  # Make sure 'imageUrl' matches the field name in your form
+        imageUrl = request.POST.get('imageUrl') 
 
-        # Validate the data (add more validation as needed)
+    
         if not name or not description or not price or not imageUrl:
             return JsonResponse({'error': 'All fields are required.'}, status=400)
 
         try:
-            price = float(price)  # Convert 'price' to a float (assuming it's a numeric field)
+            price = float(price) 
 
-            # Create the churro instance and save it to the database
+        
             churro = Churro(name=name, description=description, price=price, imageUrl=imageUrl)
             churro.save()
 
-            # Return a JsonResponse with a success message
+            
             return JsonResponse({'message': 'Churro created successfully!'}, status=201)
 
         except ValueError:
@@ -63,8 +65,7 @@ def submit_survey(request):
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
     
 
-from django.core.files.base import ContentFile
-import os
+
 
 @csrf_exempt
 @require_http_methods(["POST"])
@@ -77,21 +78,21 @@ def submit_career(request):
         if not name or not email or not resume:
             return JsonResponse({'error': 'Missing required fields'}, status=400)
 
-        # Extract file extension and create a resume filename
+        
         _, ext = os.path.splitext(resume.name)
         resume_filename = f'{name}_Resume{ext}'
 
-        # Save the resume to the default storage
+       
         resume_path = default_storage.save('resumes/' + resume_filename, resume)
 
-        # Create a Career object
+        
         Career.objects.create(name=name, email=email, resume=resume_path)
 
-        # Return a success response
+        
         return JsonResponse({'message': 'Application submitted successfully'}, status=201)
 
     except Exception as e:
-        # Log the exception for debugging
+        
         print(f"An error occurred: {e}")
         return JsonResponse({'error': f'An error occurred: {str(e)}'}, status=500)
 
@@ -100,10 +101,10 @@ def submit_career(request):
 @require_http_methods(["POST"])
 def submit_contact(request):
     try:
-        # Parse the JSON data from the request body
+        
         data = json.loads(request.body)
 
-        # Extract data from the parsed JSON
+        
         method = data.get('method')
         name = data.get('name')
         email = data.get('email')
@@ -112,16 +113,16 @@ def submit_contact(request):
         if not method or not message or (method == 'email' and not email) or (method == 'message' and not name):
             return JsonResponse({'error': 'Missing required fields'}, status=400)
 
-        # Create a Contact object and save it
+        
         Contact.objects.create(method=method, name=name, email=email, message=message)
 
-        # Return a success response
+    
         return JsonResponse({'message': 'Contact message sent successfully'}, status=201)
 
     except json.JSONDecodeError as e:
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
     except Exception as e:
-        # Log the exception for debugging
+        
         return JsonResponse({'error': f'An error occurred: {str(e)}'}, status=500)
 
 @csrf_exempt
